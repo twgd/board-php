@@ -1,0 +1,99 @@
+body {
+	margin:0;
+	background: #413C58;
+}
+
+.container {
+	width: 300px;
+	margin:50px auto;
+}
+
+.title {
+	padding: 20px;
+	font-size: 36px;
+	color: white;
+	text-align: center;
+}
+
+.success { 
+	width: 100%;
+	margin: 5px 0;
+	padding: 10px;
+	background: #DDF2EB;
+	color: #413C58;
+	font-size: 16px;
+	border :none;
+	border-radius: 5px;
+	box-sizing: border-box;
+}
+
+.notice {
+	color: red;
+}
+
+.form {
+	background: #A3C4BC;
+	padding: 20px;
+	border:none;
+	border-radius: 10px;
+	margin-bottom: 20px;
+}
+
+.input {
+	width: 100%;
+
+}
+
+.input:not(:last-child) {
+	margin-bottom: 10px;
+	line-height: 2em;
+}
+
+.input__que {
+	padding-left: 10px;
+	color: #413C58;
+}
+
+.input__ans {
+	width: 100%;
+	padding: 0 10px;
+	line-height: 3em;
+	border:none;
+	outline: none;
+	box-sizing: border-box;
+}
+
+.input__btn {
+	width: 100%;
+	padding: 10px 20px;
+	margin-top: 5px;
+	background: #DDF2EB;
+	color: #413C58;
+	font-size: 16px;
+	border :none;
+	border-radius: 5px;
+	outline: none;
+}
+.input__btn:hover {
+	cursor: pointer;
+}
+
+.redirection {
+	padding: 20px 0;
+	color: white;
+	text-align: center;
+}
+
+.redirection a {
+	width: 100px;
+	padding: 10px 20px;
+	background: #DDF2EB;
+	color: black;
+	border :none;
+	border-radius: 5px;
+	text-decoration:none;
+}
+
+.redirection a:hover {
+	cursor: pointer;
+}
