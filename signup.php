@@ -4,13 +4,17 @@
 	*/
 	session_start();
 	if (isset($_SESSION["user_id"]) && !empty($_SESSION["user_id"])) {
-		header("location:./comment.php");
+		header("location:./index.php");
 	}
 ?>
 
 <!DOCTYPE html>
 <html>
-<?php require('_head.php'); ?>
+<?php 
+	$title="註冊 - 留言板";
+	$css_link="./css/login-and-signup.css";
+	require('./views/_head.php');
+?>
 
 	<body>
 		<div class="container">
@@ -44,14 +48,14 @@
 
 			<div class="redirection">
 				已經註冊會員了？
-				<a href="login.php">登入會員</a>
+				<a href="./login.php">登入會員</a>
 			</div>
 		</div>
 
-<?php require_once("./_footer.php") ?>
+<?php require_once("./views/_footer.php") ?>
 
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-		<script type="text/javascript" src="../js/signup.js"></script>
+		<script type="text/javascript" src="./js/signup.js"></script>
 	</body>
 </html>
 

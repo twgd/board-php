@@ -14,17 +14,16 @@ $('form').submit( e => {
         // ajax
         $.ajax({
             type:'POST',
-            url:'../controllers/login_check-user.php',
+            url:'./controllers/login_check-user.php',
             data:{
                 username : username,
                 password : password
             },
             success: resp => {
                 const res = JSON.parse(resp);
-                console.log(res);
                 // 登入成功，轉址到留言板
                 if (res.result === 'success') {
-                    window.location.href = '../views/comment.php';
+                    window.location.href = './';
                 // 登入失敗，顯示錯誤訊息
                 } else if (res.result === 'error') {
                     let notice = res.message;

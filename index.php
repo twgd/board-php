@@ -4,10 +4,14 @@
 
 <!DOCTYPE html>
 <html>
-<?php require('_head.php'); ?>
+<?php 
+	$title="留言板";
+	$css_link="./css/comment.css";
+	require('./views/_head.php');
+?>
 	
 	<body>
-<?php 	require("./_navbar.php"); ?>
+<?php 	require("./views/_navbar.php"); ?>
 
 		<div class="container col-md-8">
 			<div class="board__container">
@@ -19,12 +23,11 @@
 				$csrftoken = md5(time().rand());
 				setcookie("csrftoken", $csrftoken, 0, "/");
 				// 取 Session 的值
-				$user_id = $_SESSION["user_id"];
 				$username = $_SESSION["username"];
 				$nickname = $_SESSION["nickname"];
 
 				//顯示留言表單
-				require("./_comment_form.php"); 
+				require("./views/_comment_form.php"); 
 
 			} else { ?>
 				<div class="redirection">
@@ -37,17 +40,17 @@
 
 <?php
 	//連接資料庫
-	require("../../connect.php"); 
+	require("./connect.php"); 
 
 	// 讀取 comments 第一層
 	$sql = "SELECT 
 				* 
 			FROM 
-				`twgd_comments` 
+				`comments` 
 			INNER JOIN 
-				`twgd_users` 
+				`users` 
 			ON
-				twgd_comments.user_id = twgd_users.user_id 
+				comments.user_id = users.user_id 
 			WHERE 
 				`parent_id`=0 AND `is_deleted`=0
 			ORDER BY 
@@ -114,11 +117,11 @@
 		$sql_rpy = "SELECT 
 						* 
 					FROM 
-						`twgd_comments` 
+						`comments` 
 					INNER JOIN 
-						`twgd_users` 
+						`users` 
 					ON 
-						twgd_comments.user_id = twgd_users.user_id 
+						comments.user_id = users.user_id 
 					WHERE 
 						`parent_id` = ? AND `is_deleted` =0
 					ORDER BY `created_at`"; 
@@ -176,7 +179,6 @@
 					<div class="expand">
 						點我發表回覆
 					</div>
-					<div class="hidden user_id"><?= $user_id ?></div>
 					<div class="hidden com_id"><?= $row["com_id"] ?></div>
 <?php
 			} else { ?>
@@ -195,13 +197,13 @@
 			<nav aria-label="Page navigation">
 				<ul class="pagination justify-content-center">
 		<?php	if (isset($pages)) { ?>
-					<li class="page-item"><a class="page-link text-info" href="./comment.php?page=1"> << </a></li>
+					<li class="page-item"><a class="page-link text-info" href="./?page=1"> << </a></li>
 		<?php		for($i=1; $i <= $pages ; $i++){ 
 						if($i >= $page-3 && $i  <= $page+3){?>
-					<li class="page-item"><a class="page-link text-info" href="./comment.php?page=<?= $i ?>"><?= $i ?></a></li>
+					<li class="page-item"><a class="page-link text-info" href="./?page=<?= $i ?>"><?= $i ?></a></li>
 		<?php 			}
 					} ?>
-					<li class="page-item"><a class="page-link text-info" href="./comment.php?page=<?= $pages ?>"> >> </a></li>
+					<li class="page-item"><a class="page-link text-info" href="./?page=<?= $pages ?>"> >> </a></li>
 		<?php	} ?>
 				</ul>
 			</nav>		
@@ -209,7 +211,7 @@
 
 <?php
 	//引入頁尾
-	require('./_footer.php'); 
+	require('./views/_footer.php'); 
 	$result->close();
 	$result_rpy->close();
 	$conn->close();
@@ -221,7 +223,7 @@
 			let csrftoken = "<?php if (isset($csrftoken)) echo $csrftoken ?>";
 			let nickname = "<?php if (isset($nickname)) echo $nickname ?>";
 		</script>
-		<script type="text/javascript" src="../js/comment.js"></script>
+		<script type="text/javascript" src="./js/comment.js"></script>
 
 	</body>
 </html>

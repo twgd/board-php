@@ -16,7 +16,7 @@ $('form').submit( e => {
         // ajax 
         $.ajax({
             type:'POST',
-            url:'../controllers/signup_add-user.php',
+            url:'./controllers/signup_add-user.php',
             data:{
                 username : username,
                 password : password,
@@ -30,7 +30,7 @@ $('form').submit( e => {
                     el.find('.notice').text(''); // 避免原來的錯誤訊息殘留          
                     el.find('.success').show().text(res.message);
                     setTimeout(() => {
-                        window.location.href = '../views/comment.php';
+                        window.location.href = './';
                     }, 1000);                                
                 // 顯示其他失敗訊息
                 } else if (res.result === 'error') {         

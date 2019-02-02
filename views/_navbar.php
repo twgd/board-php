@@ -1,5 +1,5 @@
 <nav class="navbar navbar-dark bg-dark fixed-top">
-	<a class="navbar-brand mb-0 h1" href="./comment.php">留言板</a>
+	<a class="navbar-brand mb-0 h1" href="./">留言板</a>
   	
 <?php 	
 

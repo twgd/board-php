@@ -2,7 +2,6 @@
 	<div class="status">
 		<div class="nickname"><?= $nickname ?></div>
 	</div>
-	<input class="input__user_id" type="hidden" name="user_id" value="<?= $user_id ?>">
 	<div>
 		<textarea class="textarea__content" name="content" rows="5" placeholder="你想說什麼？"></textarea>
 	</div>

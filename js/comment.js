@@ -4,7 +4,6 @@ $('.container').on('submit', 'form[name="comment_add"]', e =>{
 	e.preventDefault();
 	// 取表單資料
 	const el = $(e.target);
-	const userId = el.parent().find('input[name="user_id"]').val();
 	const content = el.parent().find('textarea[name="content"]').val();
 	const parentId = el.parent().find('input[name="parent_id"]').val();
 	const csrftoken = el.parent().find('input[name="csrftoken"]').val();
@@ -12,18 +11,21 @@ $('.container').on('submit', 'form[name="comment_add"]', e =>{
 	// ajax
 	$.ajax({
 		type: 'POST',
-		url: '../controllers/comment_add.php',
+		url: './controllers/comment_add.php',
 		data: {
-			user_id : userId,
 			content : content,
 			parent_id : parentId,
 			csrftoken : csrftoken
 		},
 		success: resp => {
 			const res = JSON.parse(resp);
+			if(res.result === 'error'){
+				alert(res.message);
+				return;
+			}
 			if (res.parent_id === 0) {							
 				// 顯示第一層 Comment
-				showNewComment(el, res.user_id, res.username, res.com_id, res.created_at, res.content);
+				showNewComment(el, res.username, res.com_id, res.created_at, res.content);
 			} else {
 				// 顯示第二層 Reply
 				showNewReply(el, res.username, res.com_id, res.created_at, res.content);
@@ -35,7 +37,7 @@ $('.container').on('submit', 'form[name="comment_add"]', e =>{
 			}
 		},
 		error: () => {
-			//console.log('failed');
+			alert('操作失敗，請重試一次');
 		}
 	});
 	// 清空留言區
@@ -43,7 +45,7 @@ $('.container').on('submit', 'form[name="comment_add"]', e =>{
 })
 
 // 顯示新第一層 Comment 的 function
-const showNewComment = (element, user_id, username, com_id, created_at, content) => {
+const showNewComment = (element, username, com_id, created_at, content) => {
 	const newCommentHtml = `
 		<div class="board__container">
 			<div class="comment__container">
@@ -73,7 +75,6 @@ const showNewComment = (element, user_id, username, com_id, created_at, content)
 				<div class="expand">
 					點我發表回覆
 				</div>
-				<div class="hidden user_id">${user_id}</div>
 				<div class="hidden com_id">${com_id}</div>	    
 			</div>
 		</div>`;
@@ -120,7 +121,7 @@ $('.container').on('submit', 'form[name="comment_edit"]', e => {
 
 	$.ajax({
 		type:'POST',
-		url:'../controllers/comment_edit.php',
+		url:'./controllers/comment_edit.php',
 		data:{
 			com_id : comId,
 			content: content,
@@ -128,6 +129,10 @@ $('.container').on('submit', 'form[name="comment_edit"]', e => {
 		},
 		success: resp => {
 			const res = JSON.parse(resp);
+			if(res.result === 'error'){
+				alert(res.message);
+				return;
+			}
 			// 更新留言顯示的內容
 			const contentArea = $(e.target).parent().find('.content');
 			contentArea.show().text(res.content);
@@ -140,10 +145,12 @@ $('.container').on('submit', 'form[name="comment_edit"]', e => {
 			$(e.target).parent().find('.edit-container').show();
 			// 收回編輯表單
 			$(e.target).remove();
-			
+		},
+		error: () => {
+			alert('操作失敗，請重試一次');
 		}
-	})
-})
+	});
+});
 
 
 
@@ -151,19 +158,27 @@ $('.container').on('submit', 'form[name="comment_edit"]', e => {
 // ajax 刪除留言
 $('.container').on('click', '.delete', e => {
 	e.preventDefault();
+	
+	if(confirm('確定刪除留言？') === false){
+		return;
+	};
 
 	const comId = $(e.target).parent().find('input[name="com_id"]').val();
 	const csrftoken = $(e.target).parent().find('input[name="csrftoken"]').val();
 	
 	$.ajax({
 		type:'POST',
-		url:'../controllers/comment_delete.php',
+		url:'./controllers/comment_delete.php',
 		data:{
 			com_id : comId,
 			csrftoken : csrftoken
 		},
 		success: resp => {
 			const res = JSON.parse(resp);
+			if(res.result === 'error'){
+				alert(res.message);
+				return;
+			}
 			if(res.result === 'success'){
 				const el = $(e.target).parent().parent().parent();
 				if(el.hasClass('comment__container')){
@@ -174,9 +189,12 @@ $('.container').on('click', '.delete', e => {
 					el.remove();
 				}
 			}
+		},
+		error: () => {
+			alert('操作失敗，請重試一次');
 		}
-	})
-})
+	});
+});
 
 
 // 展開回覆留言表單
@@ -207,7 +225,6 @@ $('.container').on('click', '.cancel-edit', e => {
 const showReplyForm = t => {
 	$(t.target).hide();
 
-	const userId = $(t.target).parent().find('.user_id').text();
 	const parentId = $(t.target).parent().find('.com_id').text();
 	
 	const reply_form = `
@@ -215,7 +232,6 @@ const showReplyForm = t => {
 			<div class="status">
 				<div class="nickname nickname__reply">${nickname}</div>
 			</div>
-			<input class="input__user_id" type="hidden" name="user_id" value="${userId}">
 			<div>
 				<textarea class="textarea__content" name="content" rows="3" placeholder="留下回覆"></textarea>
 			</div>

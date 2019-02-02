@@ -12,6 +12,6 @@
 	setcookie("csrftoken", "", time()-1, "/");
 	
 	//轉回留言板
-	$url = "./comment.php";
+	$url = "./index.php";
 	echo "<script>window.location.href='$url';</script>";
 ?>
