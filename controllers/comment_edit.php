@@ -6,7 +6,7 @@
 
 if (isset($_SESSION["user_id"]) && isset($_POST["com_id"]) && isset($_POST["content"]) && isset($_POST["csrftoken"]) && !empty($_POST["content"])){
 
-	require("../../connect.php");
+	require("../connect.php");
 
 	$user_id = $_SESSION["user_id"];
 	$com_id = $_POST["com_id"];
@@ -24,7 +24,7 @@ if (isset($_SESSION["user_id"]) && isset($_POST["com_id"]) && isset($_POST["cont
 	}
 
 	// update data
-	$sql = "UPDATE `twgd_comments` SET `content` = ? WHERE `com_id` = ? AND `user_id` = ?";
+	$sql = "UPDATE `comments` SET `content` = ? WHERE `com_id` = ? AND `user_id` = ?";
 	$stmt = $conn->prepare($sql);
 	$stmt->bind_param("sii", $content, $com_id, $user_id);
 
@@ -39,13 +39,16 @@ if (isset($_SESSION["user_id"]) && isset($_POST["com_id"]) && isset($_POST["cont
 
 	// 影響資料 0 列
 	if($stmt->affected_rows === 0){
-		$url = "../views/comment.php";
-		echo "<script>window.location.href='$url';</script>";
+		$arr = array(
+			'result' => 'error',
+			'message' => '無法編輯資料，有地方怪怪的'
+		);
+		echo  json_encode($arr);
 		return;
 	}
 
 	// output
-	$sql_edit = "SELECT * FROM `twgd_comments` WHERE com_id = ? AND `user_id` = ?";
+	$sql_edit = "SELECT * FROM `comments` WHERE com_id = ? AND `user_id` = ?";
 	$stmt_edit = $conn->prepare($sql_edit);
 	$stmt_edit->bind_param("ii", $com_id, $user_id);
 

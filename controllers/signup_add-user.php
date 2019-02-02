@@ -7,7 +7,7 @@
 	if (isset($_POST["username"]) && isset($_POST["password"]) && isset($_POST["password2"]) && isset($_POST["nickname"])) { 
 		
 		//connect
-		require('../../connect.php');
+		require('../connect.php');
 
 		$username = validation($_POST["username"]);
 		$password = validation($_POST["password"]);
@@ -15,7 +15,7 @@
 		$nickname = validation($_POST["nickname"]);
 
 		// ckeck username
-		$sql = "SELECT * FROM `twgd_users` WHERE `username` = ?" ;
+		$sql = "SELECT * FROM `users` WHERE `username` = ?" ;
 		$stmt = $conn->prepare($sql);
 		$stmt->bind_param("s", $username);
 		$stmt->execute();
@@ -34,7 +34,7 @@
 		if ($password !== $password2) {
 			$arr = array(
 				'result' => 'error',
-				'message' => '密碼有打錯喔'
+				'message' => '兩次輸入的密碼不一樣喔'
 			);
 			echo json_encode($arr);
 			return;			
@@ -43,7 +43,7 @@
 		// insert data
 		$hash = password_hash($password, PASSWORD_DEFAULT);
 
-		$sql_hash = "INSERT INTO twgd_users(username, password, nickname) VALUES (?, ?, ?)";
+		$sql_hash = "INSERT INTO users(username, password, nickname) VALUES (?, ?, ?)";
 		$stmt_hash = $conn->prepare($sql_hash);
 		$stmt_hash->bind_param("sss",$username, $hash, $nickname);
 

@@ -6,7 +6,7 @@
 
 	if (isset($_SESSION["user_id"]) && isset($_POST["com_id"]) && isset($_POST["csrftoken"]) && isset($_COOKIE["csrftoken"])){
 		
-		require("../../connect.php");
+		require("../connect.php");
 
 		$user_id = $_SESSION["user_id"];
 		$com_id = $_POST["com_id"];
@@ -23,7 +23,7 @@
 		}
 
 		// delete data
-		$sql = "UPDATE `twgd_comments` SET `is_deleted` = 1 WHERE `com_id` = ? AND `user_id` = ?";
+		$sql = "UPDATE `comments` SET `is_deleted` = 1 WHERE `com_id` = ? AND `user_id` = ?";
 		$stmt = $conn->prepare($sql);
 		$stmt->bind_param("ii", $com_id, $user_id);
 
@@ -38,8 +38,11 @@
 		
 		// 影響資料 0 列
 		if($stmt->affected_rows === 0){
-			$url = "../views/comment.php";
-			echo "<script>window.location.href='$url';</script>";
+			$arr = array(
+				'result' => 'error',
+				'message' => '無法刪除，有地方怪怪的'
+			);
+			echo json_encode($arr);
 			return;
 		}
 

@@ -8,13 +8,13 @@
 	if (isset($_POST["username"]) && isset($_POST["password"])) {
 		
 		// connect
-		require('../../connect.php'); 
+		require('../connect.php'); 
 		
 		$username = validation($_POST["username"]);
 		$password = validation($_POST["password"]);
 
 		// check username & password
-		$sql = "SELECT * FROM `twgd_users` WHERE `username` = ?";
+		$sql = "SELECT * FROM `users` WHERE `username` = ?";
 		$stmt = $conn->prepare($sql);
 		$stmt->bind_param("s", $username);
 		$stmt->execute();
@@ -24,7 +24,7 @@
 		if (!$result->num_rows) {
 			$arr = array(
 				'result' => 'error',
-				'message' => '你還沒註冊帳號'
+				'message' => '帳號或密碼有錯唷'
 			);
 			echo json_encode($arr);
 			return;
@@ -37,7 +37,7 @@
 		if (!password_verify($password ,$hash)) {
 			$arr = array(
 				'result' => 'error',
-				'message' => '密碼打錯囉'
+				'message' => '帳號或密碼有錯唷'
 			);
 			echo json_encode($arr);
 			return;

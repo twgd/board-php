@@ -1,12 +1,13 @@
 <?php
+	session_start();
 /*
 檔案功能：新增留言
 */
-	if (isset($_POST['user_id']) && isset($_POST['content']) && isset($_POST['csrftoken']) && isset($_POST['parent_id']) && !empty($_POST['content'])) {
+	if (isset($_SESSION['user_id']) && isset($_POST['content']) && isset($_POST['csrftoken']) && isset($_POST['parent_id']) && !empty($_POST['content'])) {
 		// connect
-		require('../../connect.php'); 
+		require('../connect.php'); 
 
-		$user_id = $_POST['user_id'];
+		$user_id = $_SESSION['user_id'];
 		$content = htmlspecialchars($_POST['content']);
 		$parent_id = $_POST['parent_id'];
 		$csrftoken = $_POST['csrftoken'];
@@ -22,7 +23,7 @@
 		}
 
 		// insert data
-		$sql = "INSERT INTO twgd_comments(user_id, content, parent_id) VALUES (?, ?, ?)"; 
+		$sql = "INSERT INTO comments(user_id, content, parent_id) VALUES (?, ?, ?)"; 
 		$stmt = $conn->prepare($sql);
 		$stmt->bind_param("isi",$user_id, $content, $parent_id);
 		
@@ -38,7 +39,7 @@
 		// output
 		$last_id = $conn->insert_id;
 
-		$sql_last = "SELECT * FROM `twgd_comments` INNER JOIN `twgd_users` ON twgd_comments.user_id = twgd_users.user_id WHERE com_id = ? ";
+		$sql_last = "SELECT * FROM `comments` INNER JOIN `users` ON comments.user_id = users.user_id WHERE com_id = ? ";
 		$stmt_last = $conn->prepare($sql_last);
 		$stmt_last->bind_param("i", $last_id);
 		

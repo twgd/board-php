@@ -4,13 +4,17 @@
 	*/
 	session_start();
 	if (isset($_SESSION["user_id"]) && !empty($_SESSION["user_id"])) {
-		header("location:./comment.php");
+		header("location:./index.php");
 	}
 ?>
 
 <!DOCTYPE html>
 <html>
-<?php require('_head.php'); ?>
+<?php 
+	$title="登入 - 留言板";
+	$css_link="./css/login-and-signup.css";
+	require('./views/_head.php');
+?>
 	<body>
 		<div class="container">
 			<div class="title">登入會員</div>
@@ -38,10 +42,10 @@
 			</div>
 		</div>
 
-<?php require_once("./_footer.php") ?>
+<?php require_once("./views/_footer.php") ?>
 	
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-		<script type="text/javascript" src="../js/login.js"></script>
+		<script type="text/javascript" src="./js/login.js"></script>
 	</body>
 </html>
 
