@@ -14,7 +14,7 @@
 		$password2 = validation($_POST["password2"]);
 		$nickname = validation($_POST["nickname"]);
 
-		// ckeck username
+		// check username
 		$sql = "SELECT * FROM `users` WHERE `username` = ?" ;
 		$stmt = $conn->prepare($sql);
 		$stmt->bind_param("s", $username);
