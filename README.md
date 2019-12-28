@@ -38,7 +38,7 @@
 ## 前端技術
 
 - 使用 AJAX 改善體驗：新增 / 編輯 / 刪除留言，不會換頁
-- 前端 Javascript 使用 jQyery 開發
+- 前端 Javascript 使用 jQuery 開發
 
 
 ## 部署
